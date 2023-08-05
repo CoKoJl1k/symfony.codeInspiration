@@ -70,7 +70,7 @@ class BookController extends AbstractController
                 $book->addAuthor($author);
             }
 
-            $this->bookRepository->add($book, true);
+            $this->bookRepository->add($book);
 
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -100,6 +100,11 @@ class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['image']->getData();
+            if (!empty($file)) {
+                $path = $this->getParameter('kernel.project_dir') . "/public/uploads/books";
+                $book = $this->fileService->saveFile($book, $file, $path);
+            }
             $bookRepository->add($book);
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
         }
