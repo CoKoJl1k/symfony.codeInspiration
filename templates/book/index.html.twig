@@ -20,7 +20,7 @@
             <tr>
                 <td>{{ book.id }}</td>
                 <td>{{ book.name }}</td>
-                <td>{{ book.image }}</td>
+                <td><img height="200" width="200" src="{{ asset('uploads/books/')~book.image }}" alt="file"/></td>
                 <td>{{ book.description }}</td>
                 <td>
                     <a href="{{ path('app_book_show', {'id': book.id}) }}">show</a>

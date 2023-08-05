@@ -34,7 +34,14 @@ class BookRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
+//    public function save(Claims $entity, bool $flush = false): void
+//    {
+//        $this->getEntityManager()->persist($entity);
+//
+//        if ($flush) {
+//            $this->getEntityManager()->flush();
+//        }
+//    }
     /**
      * @throws ORMException
      * @throws OptimisticLockException
@@ -46,6 +53,7 @@ class BookRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
 
     // /**
     //  * @return Book[] Returns an array of Book objects
