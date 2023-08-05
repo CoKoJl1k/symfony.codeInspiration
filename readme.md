@@ -7,6 +7,6 @@ symfony-cli for windows :
 
 OR
 
-Dowload file (https://symfony.com/download) 'symfony-cli_windows_amd64' and save project directory .
+Download file (https://symfony.com/download) 'symfony-cli_windows_amd64' and save project directory .
 
 Check run command 'symfony console make:migration'
