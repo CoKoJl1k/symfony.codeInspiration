@@ -40,18 +40,8 @@ class BookRepository extends ServiceEntityRepository
 
     public function findByFilters($filters)
     {
-//        $book = new Book();
-//        // Создаем экстрактор рефлексии
-//        $reflectionExtractor = new ReflectionExtractor();
-//// Создаем экземпляр построителя информации о свойствах
-//        $propertyInfo = new PropertyInfoExtractor([$reflectionExtractor]);
-//// Получаем все свойства объекта
-//        $properties = $propertyInfo->getProperties(get_class($book));
-//        dd($properties);
         $queryBuilder = $this->createQueryBuilder('b');
-
         foreach ($filters as $property => $value) {
-            // Add a condition for each property and value
             if (!empty($value)) {
                 $queryBuilder->andWhere("b.$property = :$property")->setParameter($property, $value);
             }

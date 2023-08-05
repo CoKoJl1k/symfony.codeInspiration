@@ -8,6 +8,8 @@ use App\Form\BookType;
 use App\Repository\AuthorRepository;
 use App\Repository\BookRepository;
 use App\Service\FileService;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,11 +70,15 @@ class BookController extends AbstractController
             $book->setName($data['book']['name']);
             $book->setDescription($data['book']['description']);
 
+            $dateForm = $form->get('dateCreated')->getData();
+            $dateString = $dateForm->format('Y-m-d');
+            $dateCreated = new \DateTime($dateString);
+            $book->setDateCreated($dateCreated);
+
             foreach ($data['book']['authors'] as $authorId) {
                 $author = $this->authorRepository->find($authorId);
                 $book->addAuthor($author);
             }
-
             $this->bookRepository->add($book);
 
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);

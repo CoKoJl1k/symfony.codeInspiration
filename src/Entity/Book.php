@@ -39,6 +39,11 @@ class Book
      */
     private $authors;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateCreated;
+
     public function __construct()
     {
         $this->authors = new ArrayCollection();
@@ -109,4 +114,17 @@ class Book
 
         return $this;
     }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->dateCreated;
+    }
+
+    public function setDateCreated(\DateTimeInterface $dateCreated): self
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
 }
