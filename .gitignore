@@ -8,6 +8,8 @@
 /public/bundles/
 /var/
 /vendor/
+/symfony
+/symfony.exe
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
