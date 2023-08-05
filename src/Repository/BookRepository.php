@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 /**
  * @extends ServiceEntityRepository<Book>
@@ -34,14 +36,29 @@ class BookRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-//    public function save(Claims $entity, bool $flush = false): void
-//    {
-//        $this->getEntityManager()->persist($entity);
-//
-//        if ($flush) {
-//            $this->getEntityManager()->flush();
-//        }
-//    }
+
+
+    public function findByFilters($filters)
+    {
+//        $book = new Book();
+//        // Создаем экстрактор рефлексии
+//        $reflectionExtractor = new ReflectionExtractor();
+//// Создаем экземпляр построителя информации о свойствах
+//        $propertyInfo = new PropertyInfoExtractor([$reflectionExtractor]);
+//// Получаем все свойства объекта
+//        $properties = $propertyInfo->getProperties(get_class($book));
+//        dd($properties);
+        $queryBuilder = $this->createQueryBuilder('b');
+
+        foreach ($filters as $property => $value) {
+            // Add a condition for each property and value
+            if (!empty($value)) {
+                $queryBuilder->andWhere("b.$property = :$property")->setParameter($property, $value);
+            }
+        }
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     /**
      * @throws ORMException
      * @throws OptimisticLockException

@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/book")
@@ -35,10 +36,12 @@ class BookController extends AbstractController
     /**
      * @Route("/", name="app_book_index", methods={"GET"})
      */
-    public function index(BookRepository $bookRepository): Response
+    public function index(Request $request): Response
     {
+        $filters = $request->query->all();
+        $books = $this->getDoctrine()->getRepository(Book::class)->findByFilters($filters);
         return $this->render('book/index.html.twig', [
-            'books' => $bookRepository->findAll(),
+            'books' => $books,
         ]);
     }
 
@@ -120,10 +123,9 @@ class BookController extends AbstractController
      */
     public function delete(Request $request, Book $book, BookRepository $bookRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
             $bookRepository->remove($book);
         }
-
         return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -1,8 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book index{% endblock %}
+{% block title %}Books{% endblock %}
 
 {% block body %}
+
+    <form action="{{ path('app_book_index') }}" method="GET">
+        <input type="text" name="id" placeholder="id" value="{{ app.request.query.get('id') }}">
+        <input type="text" name="name" placeholder="Name" value="{{ app.request.query.get('name') }}">
+        <input type="text" name="image" placeholder="image" value="{{ app.request.query.get('image') }}">
+        <input type="text" name="description" placeholder="Description" value="{{ app.request.query.get('description') }}">
+        <!-- Add more input fields for other properties -->
+        <button type="submit" class="btn btn-secondary btn-lg">Search</button>
+    </form>
+
     <h1>Book index</h1>
 
     <table class="table">
