@@ -11,6 +11,9 @@ services:
             $entityManager: '@doctrine.orm.entity_manager'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
+    App\Command\GenerateFakeDataCommand:
+        arguments:
+            $generator: '@App\Generator\FakeDataGenerator'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
