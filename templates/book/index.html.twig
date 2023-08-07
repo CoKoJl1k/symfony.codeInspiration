@@ -6,10 +6,6 @@
 
     <form action="{{ path('app_book_index') }}" method="GET">
         <input type="text" name="search" placeholder="search" value="{{ app.request.query.get('search') }}">
-{#        <input type="text" name="name" placeholder="Name" value="{{ app.request.query.get('name') }}">
-        <input type="text" name="image" placeholder="image" value="{{ app.request.query.get('image') }}">
-        <input type="text" name="description" placeholder="Description" value="{{ app.request.query.get('description') }}">#}
-        <!-- Add more input fields for other properties -->
         <button type="submit" class="btn btn-secondary btn-lg">Search</button>
     </form>
 
