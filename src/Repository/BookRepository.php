@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -61,6 +62,15 @@ class BookRepository extends ServiceEntityRepository
         }
     }
 
+    public function countBooksByAuthor(Author $author): int
+    {
+        return $this->createQueryBuilder('b')
+            ->select('COUNT(b)')
+            ->where('b.author = :author')
+            ->setParameter('author', $author)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
     // /**
     //  * @return Book[] Returns an array of Book objects

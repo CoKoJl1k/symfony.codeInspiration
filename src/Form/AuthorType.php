@@ -23,6 +23,7 @@ class AuthorType extends AbstractType
                 'expanded' => true,
                 'by_reference' => false,
             ])
+            ->add('numberOfBooks')
         ;
     }
 

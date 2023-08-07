@@ -75,9 +75,11 @@ class BookController extends AbstractController
             $dateCreated = new \DateTime($dateString);
             $book->setDateCreated($dateCreated);
 
-            foreach ($data['book']['authors'] as $authorId) {
-                $author = $this->authorRepository->find($authorId);
-                $book->addAuthor($author);
+            if(!empty($data['book']['authors'])){
+               foreach ($data['book']['authors'] as $authorId) {
+                   $author = $this->authorRepository->find($authorId);
+                   $book->addAuthor($author);
+               }
             }
             $this->bookRepository->add($book);
 
