@@ -40,8 +40,8 @@ class BookController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $filters = $request->query->all();
-        $books = $this->getDoctrine()->getRepository(Book::class)->findByFilters($filters);
+        $search = trim($request->query->get('search'));
+        $books = $this->getDoctrine()->getRepository(Book::class)->findByFilters($search);
         return $this->render('book/index.html.twig', [
             'books' => $books,
         ]);

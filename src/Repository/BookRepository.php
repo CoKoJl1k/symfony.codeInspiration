@@ -8,6 +8,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
@@ -37,19 +39,6 @@ class BookRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
-
-    public function findByFilters($filters)
-    {
-        $queryBuilder = $this->createQueryBuilder('b');
-        foreach ($filters as $property => $value) {
-            if (!empty($value)) {
-                $queryBuilder->andWhere("b.$property = :$property")->setParameter($property, $value);
-            }
-        }
-        return $queryBuilder->getQuery()->getResult();
-    }
-
     /**
      * @throws ORMException
      * @throws OptimisticLockException
@@ -60,6 +49,36 @@ class BookRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function findByFilters($search)
+    {
+        $entityClass = Book::class;
+        $reflectionClass = new \ReflectionClass($entityClass);
+        $properties = $reflectionClass->getProperties();
+        $propertyNames = [];
+        foreach ($properties as $property) {
+            $propertyName = $property->getName();
+            $propertyNames[] = $propertyName;
+        }
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder->select('b')->from(Book::class, 'b');
+
+        $whereExpression = $queryBuilder->expr()->orX();
+
+        foreach ($propertyNames as $field) {
+            if ($field != 'authors'){
+                $whereExpression->add(
+                    $queryBuilder->expr()->like('b.' . $field, $queryBuilder->expr()->literal('%' . $search . '%'))
+                );
+            }
+        }
+        $queryBuilder->where($whereExpression);
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
     }
 
     public function countBooksByAuthor(Author $author): int
