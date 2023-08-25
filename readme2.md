@@ -8,6 +8,7 @@ Attention ports used:
 docker-compose build app
 docker-compose up -d
 docker-compose exec app composer install
+docker-compose exec app php bin/console make:migration
 docker-compose exec app php bin/console doctrine:migrations:migrate
 
 http://localhost:80
